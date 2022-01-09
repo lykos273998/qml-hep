@@ -1,0 +1,46 @@
+running experiment with: 
+	 classical svm samples 10000 
+	 Quantum SVM samples 500
+
+running classical svm w. encoder auc
+	 training time:  24.65
+	 prediction time training set:  0.20
+	 prediction time test set:  0.22
+		 CALCULATING ROC AUC SCORES: this may take some time
+		 Classical svm ROC AUC score TRAINING SET 0.66
+		 Classical svm ROC AUC score TEST SET 0.64
+running quantum svm w. encoder AUC feature map ZZ
+	 training time:  127.44
+	 prediction time training set:  114.19
+	 prediction time test set:  216.58
+		 CALCULATING ROC AUC SCORES: this may take some time
+		 Quantum svm ROC AUC score TRAINING SET 0.98
+		 Quantum svm ROC AUC score TEST SET 0.58
+running classical svm w. encoder pca
+	 training time:  21.57
+	 prediction time training set:  0.18
+	 prediction time test set:  0.18
+		 CALCULATING ROC AUC SCORES: this may take some time
+		 Classical svm ROC AUC score TRAINING SET 0.72
+		 Classical svm ROC AUC score TEST SET 0.66
+running quantum svm w. encoder PCA feature map ZZ
+	 training time:  106.77
+	 prediction time training set:  111.52
+	 prediction time test set:  222.32
+		 CALCULATING ROC AUC SCORES: this may take some time
+		 Quantum svm ROC AUC score TRAINING SET 1.00
+		 Quantum svm ROC AUC score TEST SET 0.55
+running classical svm w. encoder nys
+	 training time:  20.21
+	 prediction time training set:  0.19
+	 prediction time test set:  0.18
+		 CALCULATING ROC AUC SCORES: this may take some time
+		 Classical svm ROC AUC score TRAINING SET 0.69
+		 Classical svm ROC AUC score TEST SET 0.66
+running quantum svm w. encoder NYS feature map ZZ
+	 training time:  113.03
+	 prediction time training set:  113.23
+	 prediction time test set:  222.91
+		 CALCULATING ROC AUC SCORES: this may take some time
+		 Quantum svm ROC AUC score TRAINING SET 0.65
+		 Quantum svm ROC AUC score TEST SET 0.64

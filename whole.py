@@ -20,6 +20,15 @@ from utils import feature_list, u2Reuploading
 
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix, ConfusionMatrixDisplay, roc_auc_score, roc_curve
 
+import sys
+
+n_c = 16
+C_SVM_SAMPLES = 10000
+Q_SVM_SAMPLES = 500
+PREDICTIONS = 500
+
+
+
 FEATURES = [32, 24, 40, 16, 8, 0, 48, 3, 51, 11, 19, 43, 27, 35, 57, 47]
 
 PROBA = True
@@ -58,22 +67,20 @@ bg_train = np.where(y_train == 0)
 sig_train = np.where(y_train == 1)
 
 
-encoders = ['pca','nys','auc']
+encoders = ['auc','pca','nys']
 #encoders = ['auc']
 
 from time import time
 CMAT_PATH = 'cmats/'
-n_c = 16
-C_SVM_SAMPLES = 10000
-Q_SVM_SAMPLES = 500
-PREDICTIONS = 500
+
 seed = 12345
 
 
-f_maps = ['u2','zz']
+#f_maps = ['u2','zz']
+f_maps = ['zz']
 
-zz = ZZFeatureMap(feature_dimension=n_c, reps=2)
-u2 = u2Reuploading(nfeatures=16)
+zz = ZZFeatureMap(feature_dimension=n_c, reps=2, entanglement='linear')
+u2 = u2Reuploading(nqubits = n_c//2, nfeatures=n_c)
 
 backend = QuantumInstance(
     BasicAer.get_backend("statevector_simulator"), shots=1024, seed_simulator=seed, seed_transpiler=seed
@@ -103,6 +110,9 @@ for encoder in encoders:
     if encoder == 'auc':
         x_tf_train = x_train[:,FEATURES]
         x_tf_test = x_test[:,FEATURES]
+
+        x_tf_train = x_tf_train[:,:n_c]
+        x_tf_test = x_tf_test[:,:n_c]
 
     #declaring svm object
 
@@ -143,16 +153,16 @@ for encoder in encoders:
     plt.savefig(f"{CMAT_PATH}classical_{encoder}_test.jpg")
 
     if PROBA:
-        print(f"\t\t CALCULATING ROC AUC SCORES: this could take some time")
+        print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
         y_proba = svm.predict_proba(x_tf_train[:PREDICTIONS])
         score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,0])
 
-        print(f"\t\t Classical svm ROC AUC score TRAINING SET {max(score,1 - score)}")
+        print(f"\t\t Classical svm ROC AUC score TRAINING SET {max(score,1 - score) :.2f}")
 
         y_proba = svm.predict_proba(x_tf_test[:PREDICTIONS])
         score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,0])
 
-        print(f"\t\t Classical svm ROC AUC score TEST SET {max(score,1 - score)}")
+        print(f"\t\t Classical svm ROC AUC score TEST SET {max(score,1 - score):.2f}")
 
 
 
@@ -169,7 +179,7 @@ for encoder in encoders:
 
         qsvm = SVC(kernel=kernel.evaluate, probability=PROBA)
 
-        print(f"running quantum svm w. encoder {encoder.upper()} feature map  {feature_map.upper()}")
+        print(f"running quantum svm w. encoder {encoder.upper()} feature map {feature_map.upper()}")
 
         begin = time()
         qsvm.fit(x_tf_train[:Q_SVM_SAMPLES], y_train[:Q_SVM_SAMPLES])
@@ -202,16 +212,16 @@ for encoder in encoders:
         plt.savefig(f"{CMAT_PATH}quantum_{encoder}_{feature_map}_test.jpg")
 
         if PROBA:
-            print(f"\t\t CALCULATING ROC AUC SCORES: this could take some time")
+            print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
             y_proba = qsvm.predict_proba(x_tf_train[:PREDICTIONS])
             score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,0])
 
-            print(f"\t\t Quantum svm ROC AUC score TRAINING SET {max(score,1 - score)}")
+            print(f"\t\t Quantum svm ROC AUC score TRAINING SET {max(score,1 - score) :.2f}")
 
             y_proba = qsvm.predict_proba(x_tf_test[:PREDICTIONS])
             score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,0])
 
-            print(f"\t\t Quantum svm ROC AUC score TEST SET {max(score,1 - score)}")
+            print(f"\t\t Quantum svm ROC AUC score TEST SET {max(score,1 - score) :.2f}")
 
 
 
