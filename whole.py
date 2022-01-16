@@ -11,7 +11,7 @@ from qiskit.circuit.library import ZZFeatureMap
 from qiskit.utils import QuantumInstance, algorithm_globals
 from qiskit_machine_learning.algorithms import QSVC
 from qiskit_machine_learning.kernels import QuantumKernel
-from qiskit_machine_learning.datasets import ad_hoc_data
+
 
 from sklearn.kernel_approximation import Nystroem
 from sklearn.utils import shuffle
@@ -67,8 +67,8 @@ bg_train = np.where(y_train == 0)
 sig_train = np.where(y_train == 1)
 
 
-encoders = ['auc','pca','nys']
-#encoders = ['auc']
+#encoders = ['auc','pca','nys']
+encoders = ['auc']
 
 from time import time
 CMAT_PATH = 'cmats/'
@@ -76,8 +76,8 @@ CMAT_PATH = 'cmats/'
 seed = 12345
 
 
-#f_maps = ['u2','zz']
-f_maps = ['zz']
+f_maps = ['u2','zz']
+#f_maps = ['u2']
 
 zz = ZZFeatureMap(feature_dimension=n_c, reps=2, entanglement='linear')
 u2 = u2Reuploading(nqubits = n_c//2, nfeatures=n_c)
@@ -155,14 +155,18 @@ for encoder in encoders:
     if PROBA:
         print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
         y_proba = svm.predict_proba(x_tf_train[:PREDICTIONS])
-        score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,0])
+        score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,1])
 
         print(f"\t\t Classical svm ROC AUC score TRAINING SET {max(score,1 - score) :.2f}")
 
         y_proba = svm.predict_proba(x_tf_test[:PREDICTIONS])
-        score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,0])
+        score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,1])
 
         print(f"\t\t Classical svm ROC AUC score TEST SET {max(score,1 - score):.2f}")
+
+        """
+        Distribuzioni di probabilità
+        """
 
 
 
@@ -214,14 +218,18 @@ for encoder in encoders:
         if PROBA:
             print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
             y_proba = qsvm.predict_proba(x_tf_train[:PREDICTIONS])
-            score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,0])
+            score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,1])
 
             print(f"\t\t Quantum svm ROC AUC score TRAINING SET {max(score,1 - score) :.2f}")
 
             y_proba = qsvm.predict_proba(x_tf_test[:PREDICTIONS])
-            score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,0])
+            score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,1])
 
             print(f"\t\t Quantum svm ROC AUC score TEST SET {max(score,1 - score) :.2f}")
+
+            """
+            Distribuzioni di probabilità 
+            """
 
 
 
