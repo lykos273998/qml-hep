@@ -76,8 +76,8 @@ CMAT_PATH = 'cmats/'
 seed = 12345
 
 
-f_maps = ['u2','zz']
-#f_maps = ['u2']
+#f_maps = ['u2','zz']
+f_maps = ['u2']
 
 zz = ZZFeatureMap(feature_dimension=n_c, reps=2, entanglement='linear')
 u2 = u2Reuploading(nqubits = n_c//2, nfeatures=n_c)
@@ -157,12 +157,12 @@ for encoder in encoders:
         y_proba = svm.predict_proba(x_tf_train[:PREDICTIONS])
         score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,1])
 
-        print(f"\t\t Classical svm ROC AUC score TRAINING SET {max(score,1 - score) :.2f}")
+        print(f"\t\t Classical svm ROC AUC score TRAINING SET {score :.2f}")
 
         y_proba = svm.predict_proba(x_tf_test[:PREDICTIONS])
         score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,1])
 
-        print(f"\t\t Classical svm ROC AUC score TEST SET {max(score,1 - score):.2f}")
+        print(f"\t\t Classical svm ROC AUC score TEST SET {score :.2f}")
 
         """
         Distribuzioni di probabilità
@@ -220,12 +220,12 @@ for encoder in encoders:
             y_proba = qsvm.predict_proba(x_tf_train[:PREDICTIONS])
             score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,1])
 
-            print(f"\t\t Quantum svm ROC AUC score TRAINING SET {max(score,1 - score) :.2f}")
+            print(f"\t\t Quantum svm ROC AUC score TRAINING SET {score :.2f}")
 
             y_proba = qsvm.predict_proba(x_tf_test[:PREDICTIONS])
             score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,1])
 
-            print(f"\t\t Quantum svm ROC AUC score TEST SET {max(score,1 - score) :.2f}")
+            print(f"\t\t Quantum svm ROC AUC score TEST SET {score :.2f}")
 
             """
             Distribuzioni di probabilità 
