@@ -155,7 +155,7 @@ for encoder in encoders:
     if PROBA:
         print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
         y_proba = svm.predict_proba(x_tf_train[:PREDICTIONS])
-        score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,1])
+        score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,0])
 
         print(f"\t\t Classical svm ROC AUC score TRAINING SET {score :.2f}")
 
