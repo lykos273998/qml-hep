@@ -16,14 +16,14 @@ from qiskit_machine_learning.kernels import QuantumKernel
 from sklearn.kernel_approximation import Nystroem
 from sklearn.utils import shuffle
 
-from utils import feature_list, u2Reuploading
+from utils import feature_list, generate_hist_prob, u2Reuploading
 
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix, ConfusionMatrixDisplay, roc_auc_score, roc_curve
 
 import sys
 
 n_c = 16
-C_SVM_SAMPLES = 10000
+C_SVM_SAMPLES = 500
 Q_SVM_SAMPLES = 500
 PREDICTIONS = 500
 
@@ -128,12 +128,12 @@ for encoder in encoders:
 
     #predictions and confusion matrix
     begin = time()
-    y_pred = svm.predict(x_tf_train[:PREDICTIONS])
+    y_pred_train = svm.predict(x_tf_train[:PREDICTIONS])
     end = time()
 
     print(f"\t prediction time training set: {end - begin : .2f}")
 
-    cm = confusion_matrix(y_train[:PREDICTIONS],y_pred, normalize='true')
+    cm = confusion_matrix(y_train[:PREDICTIONS],y_pred_train, normalize='true')
     disp = ConfusionMatrixDisplay(cm)
     disp.plot()
     plt.title(f"classical svm w. encoder {encoder} training set")
@@ -141,12 +141,12 @@ for encoder in encoders:
 
 
     begin = time()
-    y_pred = svm.predict(x_tf_test[:PREDICTIONS])
+    y_pred_test = svm.predict(x_tf_test[:PREDICTIONS])
     end = time()
 
     print(f"\t prediction time test set: {end - begin : .2f}")
 
-    cm = confusion_matrix(y_test[:PREDICTIONS],y_pred, normalize='true')
+    cm = confusion_matrix(y_test[:PREDICTIONS],y_pred_test, normalize='true')
     disp = ConfusionMatrixDisplay(cm)
     disp.plot()
     plt.title(f"classical svm w. encoder {encoder} test set")
@@ -154,19 +154,21 @@ for encoder in encoders:
 
     if PROBA:
         print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
-        y_proba = svm.predict_proba(x_tf_train[:PREDICTIONS])
-        score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,0])
+        y_proba_train = svm.predict_proba(x_tf_train[:PREDICTIONS])
+        score = roc_auc_score(y_train[:PREDICTIONS], y_proba_train[:,1])
 
         print(f"\t\t Classical svm ROC AUC score TRAINING SET {score :.2f}")
 
-        y_proba = svm.predict_proba(x_tf_test[:PREDICTIONS])
-        score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,1])
+        y_proba_test = svm.predict_proba(x_tf_test[:PREDICTIONS])
+        score = roc_auc_score(y_test[:PREDICTIONS], y_proba_test[:,1])
 
         print(f"\t\t Classical svm ROC AUC score TEST SET {score :.2f}")
 
         """
         Distribuzioni di probabilità
         """
+
+        generate_hist_prob(y_train[:PREDICTIONS], y_pred_train, y_proba_train, 'probability distributions train', f"{CMAT_PATH}train")
 
 
 
@@ -192,24 +194,24 @@ for encoder in encoders:
         print(f"\t training time: {end - begin : .2f}")
 
         begin = time()
-        y_pred = qsvm.predict(x_tf_train[:PREDICTIONS])
+        y_pred_train = qsvm.predict(x_tf_train[:PREDICTIONS])
         end = time()
 
         print(f"\t prediction time training set: {end - begin : .2f}")
 
-        cm = confusion_matrix(y_train[:PREDICTIONS],y_pred, normalize='true')
+        cm = confusion_matrix(y_train[:PREDICTIONS],y_pred_train, normalize='true')
         disp = ConfusionMatrixDisplay(cm)
         disp.plot()
         plt.title(f"quantum svm w. encoder {encoder} map {feature_map} training set ")
         plt.savefig(f"{CMAT_PATH}quantum_{encoder}_{feature_map}_train.jpg")
         
         begin = time()
-        y_pred = qsvm.predict(x_tf_test[:PREDICTIONS])
+        y_pred_test = qsvm.predict(x_tf_test[:PREDICTIONS])
         end = time()
 
         print(f"\t prediction time test set: {end - begin : .2f}")
 
-        cm = confusion_matrix(y_test[:PREDICTIONS],y_pred, normalize='true')
+        cm = confusion_matrix(y_test[:PREDICTIONS],y_pred_test, normalize='true')
         disp = ConfusionMatrixDisplay(cm)
         disp.plot()
         plt.title(f"quantum svm w. encoder {encoder} map {feature_map}  test set")
@@ -217,13 +219,13 @@ for encoder in encoders:
 
         if PROBA:
             print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
-            y_proba = qsvm.predict_proba(x_tf_train[:PREDICTIONS])
-            score = roc_auc_score(y_train[:PREDICTIONS], y_proba[:,1])
+            y_proba_train = qsvm.predict_proba(x_tf_train[:PREDICTIONS])
+            score = roc_auc_score(y_train[:PREDICTIONS], y_proba_train[:,1])
 
             print(f"\t\t Quantum svm ROC AUC score TRAINING SET {score :.2f}")
 
-            y_proba = qsvm.predict_proba(x_tf_test[:PREDICTIONS])
-            score = roc_auc_score(y_test[:PREDICTIONS], y_proba[:,1])
+            y_proba_test = qsvm.predict_proba(x_tf_test[:PREDICTIONS])
+            score = roc_auc_score(y_test[:PREDICTIONS], y_proba_test[:,1])
 
             print(f"\t\t Quantum svm ROC AUC score TEST SET {score :.2f}")
 

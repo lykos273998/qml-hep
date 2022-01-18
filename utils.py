@@ -70,7 +70,10 @@ feature_list = [
 ]
 
 
+from calendar import c
+from locale import normalize
 from qiskit.circuit import QuantumCircuit, ParameterVector
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -98,3 +101,18 @@ def u2Reuploading(nqubits=8, nfeatures=16) -> QuantumCircuit:
         qc.u(x[feature], x[feature + 1], 0, qubit)
 
     return qc
+
+
+def generate_hist_prob(y_true, y_model, y_proba, title, path):
+    n_class = np.shape(y_proba)[1]
+    n = np.shape(y_proba)[0]
+    for c_true in range(n_class):
+        
+        idx = np.where(y_true == c_true)
+        plt.figure(figsize=(5,5))
+
+        print(np.shape(y_proba[idx, c_true]))
+        plt.hist(y_proba[idx, c_true].T, alpha = 0.8)
+        plt.title(f"{title} class {c_true}")
+        plt.savefig(f"{path}_c{c_true}.jpg")
+
