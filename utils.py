@@ -111,7 +111,7 @@ def generate_hist_prob(y_true, y_model, y_proba, title, path):
         idx = np.where(y_true == c_true)
         plt.figure(figsize=(5,5))
 
-        print(np.shape(y_proba[idx, c_true]))
+        #print(np.shape(y_proba[idx, c_true]))
         plt.hist(y_proba[idx, c_true].T, alpha = 0.8)
         plt.title(f"{title} class {c_true}")
         plt.savefig(f"{path}_c{c_true}.jpg")
