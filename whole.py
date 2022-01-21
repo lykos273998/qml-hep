@@ -223,7 +223,7 @@ for run in range(RUNS):
 
             Then plot the distribution of examples over probabilities
             the goal is to check if the majority of examples belonging to signal has
-            prob to belonging to signal approaching 1
+            prob to belonging to signal approaching 1 (and vice versa for background)
 
             """
             print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
