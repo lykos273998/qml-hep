@@ -36,7 +36,7 @@ Details on the dataset: https://qml-hep.github.io/qml_web/
 
 
 /!\ this code is higly cpu demanding on xy and zz maps
-/!\ for a quick test use only u2 map
+/!\ for a quick test use only u2 map with n_c = 8
 """
 
 
@@ -59,6 +59,7 @@ encoders = ['auc','pca','nys']
 #modify this line to use one particular map
 f_maps = ['u2','zz','xy']
 #f_maps = ['u2']
+
 C_SVM_SAMPLES = 500
 Q_SVM_SAMPLES = 500
 PREDICTIONS = 500

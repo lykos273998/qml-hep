@@ -50,6 +50,15 @@ Parameters:
 
 - `PROBA`          : control the fitting of svm to later retrive probability score and AUC
 
+Once setted all parameters run with:
+
+`python3 whole.py`
+
+The script outputs confusion matrices for all model tested and a final dump of the auc values and training time. 
+On the terminal it writes in real time auc scores of the model tested if PROBA parameter is set to True and time required to train and test the models. 
+
+
+
 
 
 
