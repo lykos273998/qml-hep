@@ -32,7 +32,7 @@ January 2022
 
 Testing Quantum Kernel SVM approach to binary classification problem in HEP
 
-Detail on the dataset: https://qml-hep.github.io/qml_web/
+Details on the dataset: https://qml-hep.github.io/qml_web/
 
 
 /!\ this code is higly cpu demanding on xy and zz maps
@@ -44,7 +44,7 @@ Detail on the dataset: https://qml-hep.github.io/qml_web/
 Parameters for the test:
 
 @n_c            :: number of features to consider for training and tesing models
-@encoders       :: encoders used to reduce data dimensionality
+@encoders       :: encoders used to reduce data dimensionality 
 @C_SVM_SAMPLES  :: samples used to train the classical model
 @Q_SVM_SAMPLES  :: samples used to train the quantum model
 @PREDICTIONS    :: samples used to test models
@@ -53,11 +53,12 @@ Parameters for the test:
 
 """
 n_c = 8
-#encoders = ['auc','pca','nys']
-encoders = ['auc']
+encoders = ['auc','pca','nys']
+#encoders = ['auc']
 
-#f_maps = ['u2','zz','xy']
-f_maps = ['u2']
+#modify this line to use one particular map
+f_maps = ['u2','zz','xy']
+#f_maps = ['u2']
 C_SVM_SAMPLES = 500
 Q_SVM_SAMPLES = 500
 PREDICTIONS = 500
@@ -222,7 +223,7 @@ for run in range(RUNS):
             Then plot the distribution of examples over probabilities
             the goal is to check if the majority of examples belonging to signal has
             prob to belonging to signal approaching 1
-            
+
             """
             print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")
             y_proba_train = svm.predict_proba(x_tf_train[:PREDICTIONS])

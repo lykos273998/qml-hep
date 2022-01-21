@@ -6,7 +6,10 @@ import numpy as np
 
 def u2Reuploading(nqubits=8, nfeatures=16) -> QuantumCircuit:
     """
-    This code is part of 
+    Credits: Vasilis Belis (vbelis), bb511 (Patrick Odagiu) , GonzalesCastillo (Samuel Gonzales Castillo)
+
+    https://github.com/QML-HEP/ae_qml
+
     Constructs the u2Reuploading feature map.
     @nqubits   :: Int number of qubits used.
     @nfeatures :: Number of variables in the dataset to be processed.
