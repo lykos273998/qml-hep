@@ -35,8 +35,8 @@ Testing Quantum Kernel SVM approach to binary classification problem in HEP
 Details on the dataset: https://qml-hep.github.io/qml_web/
 
 
-/!\ this code is highly cpu demanding on xy and zz maps
-/!\ for a quick test use only u2 map with n_c = 8
+/!\ this code is highly cpu demanding on xy and zz maps /!\ 
+/!\ for a quick test use only u2 map with n_c = 8       /!\ 
 """
 
 
@@ -53,12 +53,12 @@ Parameters for the test:
 
 """
 n_c = 8
-encoders = ['auc','pca','nys']
-#encoders = ['auc']
+#encoders = ['auc','pca','nys']
+encoders = ['auc']
 
 #modify this line to use one particular map
-f_maps = ['u2','zz','xy']
-#f_maps = ['u2']
+#f_maps = ['u2','zz','xy']
+f_maps = ['u2']
 
 C_SVM_SAMPLES = 500
 Q_SVM_SAMPLES = 500
@@ -197,6 +197,7 @@ for run in range(RUNS):
         plt.xlabel('Predicted label'), plt.ylabel('True label')
         plt.title(f"classical svm w. encoder {encoder} training set")
         plt.savefig(f"{CMAT_PATH}classical_{encoder}_train.jpg")
+        plt.close()
 
         """
         Use the model to predict labels of data and take the time
@@ -213,6 +214,7 @@ for run in range(RUNS):
         plt.xlabel('Predicted label'), plt.ylabel('True label')
         plt.title(f"classical svm w. encoder {encoder} test set")
         plt.savefig(f"{CMAT_PATH}classical_{encoder}_test.jpg")
+        plt.close()
 
         if PROBA:
             """
@@ -280,6 +282,7 @@ for run in range(RUNS):
             plt.xlabel('Predicted label'), plt.ylabel('True label')
             plt.title(f"quantum svm w. encoder {encoder} map {feature_map} training set ")
             plt.savefig(f"{CMAT_PATH}quantum_{encoder}_{feature_map}_train.jpg")
+            plt.close()
             
             begin = time()
             y_pred_test = qsvm.predict(x_tf_test[:PREDICTIONS])
@@ -293,6 +296,7 @@ for run in range(RUNS):
             plt.xlabel('Predicted label'), plt.ylabel('True label')
             plt.title(f"quantum svm w. encoder {encoder} map {feature_map}  test set")
             plt.savefig(f"{CMAT_PATH}quantum_{encoder}_{feature_map}_test.jpg")
+            plt.close()
 
             if PROBA:
                 print(f"\t\t CALCULATING ROC AUC SCORES: this may take some time")

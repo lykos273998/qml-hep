@@ -69,6 +69,7 @@ def get_hist_proba(y_proba_train_cl, y_proba_test_cl, bg_train, bg_test, sig_tra
     axs[0].legend(loc='upper left'), axs[1].legend(loc='upper left')
 
     plt.savefig(savepath)
+    plt.close()
 
 #defining feature list utility
 feature_list = [
