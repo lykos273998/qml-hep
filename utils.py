@@ -1,3 +1,73 @@
+
+from qiskit.circuit import QuantumCircuit, ParameterVector
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def u2Reuploading(nqubits=8, nfeatures=16) -> QuantumCircuit:
+    """
+    This code is part of 
+    Constructs the u2Reuploading feature map.
+    @nqubits   :: Int number of qubits used.
+    @nfeatures :: Number of variables in the dataset to be processed.
+    returns :: The quantum circuit object form qiskit.
+    """
+    x = ParameterVector("x", nfeatures)
+    qc = QuantumCircuit(nqubits)
+    for feature, qubit in zip(range(0, 2 * nqubits, 2), range(nqubits)):
+        qc.u(
+            np.pi / 2, x[feature], x[feature + 1], qubit
+        )  # u2(φ,λ) = u(π/2,φ,λ)
+    for i in range(nqubits):
+        if i == nqubits - 1:
+            break
+        qc.cx(i, i + 1)
+    for feature, qubit in zip(range(2 * nqubits, nfeatures, 2), range(nqubits)):
+        qc.u(np.pi / 2, x[feature], x[feature + 1], qubit)
+
+    for feature, qubit in zip(range(0, 2 * nqubits, 2), range(nqubits)):
+        qc.u(x[feature], x[feature + 1], 0, qubit)
+
+    return qc
+
+
+def get_hist_proba(y_proba_train_cl, y_proba_test_cl, bg_train, bg_test, sig_train, sig_test, savepath = 'cmats/p_hist.png'):
+    """
+    Function that builds the histogram of the probabilities for which the model has predicted an observation to be signal or background
+    arguments:
+
+    @y_proba_train_cl :: probability scores for the ouput on training samples
+    @y_proba_test_cl  :: probability scores for the ouput on test samples
+    @bg_train         :: indices of samples belonging to background in the training set
+    @bt_test          :: indices of samples belonging to background in the test set
+    @sig_train        :: indices of samples belonging to signal in the training set
+    @sig_test         :: indices of samples belonging to signal in the test set
+    """
+    bg_proba_train_cl  = y_proba_train_cl[bg_train] 
+    sig_proba_train_cl = y_proba_train_cl[sig_train] 
+    bg_proba_test_cl  = y_proba_test_cl[bg_test] 
+    sig_proba_test_cl = y_proba_test_cl[sig_test] 
+         
+    #axs[0].sharey(axs[1])
+    fig,axs = plt.subplots(1,2,sharey=False, tight_layout=True)
+    fig.suptitle("") #Y
+
+    #estetica
+    axs[0].set_xlabel('p'),     axs[1].set_xlabel('p')
+    axs[0].set_ylabel('count'), axs[1].set_ylabel('count')
+    axs[0].set_xlim(0,1), axs[1].set_xlim(0,1)    
+    #axs[0].set_yticks([]), axs[1].set_yticks([])
+    axs[0].set_title('Training set')
+    axs[0].hist(bg_proba_train_cl[:,0], alpha=0.6, label='background', color='black')
+    axs[0].hist(sig_proba_train_cl[:,1], alpha=0.6, label='signal', color='green')
+    axs[1].set_title('Test set')
+    axs[1].hist(bg_proba_test_cl[:,0], alpha=0.6, label='background', color='black')
+    axs[1].hist(sig_proba_test_cl[:,1], alpha=0.6, label='signal', color='green')
+    axs[0].legend(loc='upper left'), axs[1].legend(loc='upper left')
+
+    plt.savefig(savepath)
+
+#defining feature list utility
 feature_list = [
     'p_T Jet1',
     '\eta Jet1',
@@ -68,51 +138,3 @@ feature_list = [
     'p_z Lepton'
     
 ]
-
-
-from calendar import c
-from locale import normalize
-from qiskit.circuit import QuantumCircuit, ParameterVector
-import matplotlib.pyplot as plt
-import numpy as np
-
-
-def u2Reuploading(nqubits=8, nfeatures=16) -> QuantumCircuit:
-    """
-    Constructs the u2Reuploading feature map.
-    @nqubits   :: Int number of qubits used.
-    @nfeatures :: Number of variables in the dataset to be processed.
-    returns :: The quantum circuit object form qiskit.
-    """
-    x = ParameterVector("x", nfeatures)
-    qc = QuantumCircuit(nqubits)
-    for feature, qubit in zip(range(0, 2 * nqubits, 2), range(nqubits)):
-        qc.u(
-            np.pi / 2, x[feature], x[feature + 1], qubit
-        )  # u2(φ,λ) = u(π/2,φ,λ)
-    for i in range(nqubits):
-        if i == nqubits - 1:
-            break
-        qc.cx(i, i + 1)
-    for feature, qubit in zip(range(2 * nqubits, nfeatures, 2), range(nqubits)):
-        qc.u(np.pi / 2, x[feature], x[feature + 1], qubit)
-
-    for feature, qubit in zip(range(0, 2 * nqubits, 2), range(nqubits)):
-        qc.u(x[feature], x[feature + 1], 0, qubit)
-
-    return qc
-
-
-def generate_hist_prob(y_true, y_model, y_proba, title, path):
-    n_class = np.shape(y_proba)[1]
-    n = np.shape(y_proba)[0]
-    for c_true in range(n_class):
-        
-        idx = np.where(y_true == c_true)
-        plt.figure(figsize=(5,5))
-
-        #print(np.shape(y_proba[idx, c_true]))
-        plt.hist(y_proba[idx, c_true].T, alpha = 0.8)
-        plt.title(f"{title} class {c_true}")
-        plt.savefig(f"{path}_c{c_true}.jpg")
-
