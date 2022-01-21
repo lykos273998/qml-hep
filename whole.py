@@ -35,7 +35,7 @@ Testing Quantum Kernel SVM approach to binary classification problem in HEP
 Details on the dataset: https://qml-hep.github.io/qml_web/
 
 
-/!\ this code is higly cpu demanding on xy and zz maps
+/!\ this code is highly cpu demanding on xy and zz maps
 /!\ for a quick test use only u2 map with n_c = 8
 """
 

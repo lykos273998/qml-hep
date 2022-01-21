@@ -24,7 +24,7 @@ The repository is contains 3 main components:
 
 - `whole.py` Python File for running the entire project
 
-- `utils.py` Utility file with functions for plotting and 
+- `utils.py` Utility file with functions for plotting and retriving feature maps
 
 ## How to run 
 
@@ -55,7 +55,12 @@ Once setted all parameters run with:
 `python3 whole.py`
 
 The script outputs confusion matrices for all model tested and a final dump of the auc values and training time. 
-On the terminal it writes in real time auc scores of the model tested if PROBA parameter is set to True and time required to train and test the models. 
+
+On the terminal it writes the time required to train and test the models and auc scores of the model tested if PROBA parameter is set to True.
+
+## Keynote
+
+Keynote presentation can be found in `keynote_aqm.pdf`, unfortunately in Italian. 
 
 
 
