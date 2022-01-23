@@ -96,7 +96,12 @@ Getting the feature maps and a backend for evaluating later
 """
 
 zz = ZZFeatureMap(feature_dimension=n_c, reps=2, entanglement='linear')
-u2 = u2Reuploading(nqubits = n_c//2, nfeatures=n_c)
+
+"""
+Note: the function that retrieves the u2Reuploading map works if 2*log2(n) is less than n_c//2
+For the tests performed 8 and 16 features the number of qubits used were 4 and 8 
+"""
+u2 = u2Reuploading(nqubits = min(n_c//2,2*int(np.log2(n_c))), nfeatures=n_c)
 xy = PauliFeatureMap(feature_dimension=n_c, reps=2, paulis=['XY'],entanglement = 'linear')
 
 backend = QuantumInstance(
