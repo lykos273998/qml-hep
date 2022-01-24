@@ -2,23 +2,23 @@
 
 
 ## Project
-The main goal of this project is to apply Quantum Kernel Machine learing tecniques to data a data classification problem in High Energy Physics, description of the problem and the dataset can be found [here](https://qml-hep.github.io/qml_web/)
+The main goal of this project is to apply Quantum Kernel Machine learning tecniques to a data classification problem in High Energy Physics; description of the problem and the dataset can be found [here](https://qml-hep.github.io/qml_web/)
 
 ## Requirements
-The project relies on the following python packges: 
+The project relies on the following python packages: 
 
 - `qiskit`: IBM's quantum computing framework
 
 - `matplotlib`, `seaoborn`: for plotting graphs
 
-- `numpy` and `sklearn` : for the numerical heavy lifting and the machine learning algorithms and metrics used
+- `numpy` and `sklearn` : for the numerical heavy lifting, the machine learning algorithms and metrics used
 
-- `a lot of patience` : training and testing this kind of algorithm is very very time consuming, the system on wich was tested is an `Intel Core i7 6700HQ - 8GB RAM`, running the entire test for 1 run takes more or less 1 hour and a half
+- `a lot of patience` : training and testing this kind of algorithm is very very time consuming, the system on which was tested is an `Intel Core i7 6700HQ - 8GB RAM`, running the entire test for 1 run takes more or less 1 hour and a half
 
 
 
 ## Repository description
-The repository is contains 3 main components:
+The repository contains 3 main components:
 
 - `QSVM.ipynb` Experimental notebook used to test code
 
@@ -28,7 +28,7 @@ The repository is contains 3 main components:
 
 ## How to run 
 
-Pareser is not yet implemented, paramters are hard coded in the first lines of the python file.
+Pareser is not yet implemented, parameters are hard coded in the first lines of the python file.
 
 **IMPORTANT**: change `data_path` variable. The file expects an `numpy` array which has the first k columns as features and the last one as label.
 
@@ -46,15 +46,15 @@ Parameters:
 
 - `PREDICTIONS`    : samples used to test models
 
-- `RUNS`           : numbers of run to perform
+- `RUNS`           : number of runs to perform
 
-- `PROBA`          : control the fitting of svm to later retrive probability score and AUC
+- `PROBA`          : control the fitting of svm to later retrieve probability score and AUC
 
-Once setted all parameters run with:
+Once set all parameters run with:
 
 `python3 whole.py`
 
-The script outputs confusion matrices for all model tested and a final dump of the auc values and training time. 
+The script outputs confusion matrices for all models tested and a final dump of the auc values and training time. 
 
 On the terminal it writes the time required to train and test the models and auc scores of the model tested if PROBA parameter is set to True.
 
